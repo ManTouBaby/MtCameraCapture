@@ -25,6 +25,7 @@ import com.mt.camera.widget.CaptureButton;
 public class CameraCaptureRecordFragment extends BaseFragment implements OnCameraCaptureListener {
     private int mode; // 拍摄模式
     private long duration; // 拍摄时长
+    private long realDuration;//实际拍摄时长
 
     private CameraOrientationListener cameraOrientationListener;
 
@@ -51,6 +52,7 @@ public class CameraCaptureRecordFragment extends BaseFragment implements OnCamer
         cameraOrientationListener.enable();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -114,9 +116,11 @@ public class CameraCaptureRecordFragment extends BaseFragment implements OnCamer
             }
 
             @Override
-            public void onCaptureRecordEnd() {
+            public void onCaptureRecordEnd(Long videoTime) {
+                realDuration = videoTime;
                 capture.captureRecordEnd();
             }
+
 
             @Override
             public void onCaptureError(String message) {
@@ -203,7 +207,7 @@ public class CameraCaptureRecordFragment extends BaseFragment implements OnCamer
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.camera_capture_main_framelayout,
-                        new CameraCapturePreviewFragment(Util.Const.类型_照片, photoPath),
+                        new CameraCapturePreviewFragment(Util.Const.类型_照片, photoPath, 0),
                         CameraCapturePreviewFragment.class.getSimpleName())
                 .addToBackStack(null)
                 .commit();
@@ -215,7 +219,7 @@ public class CameraCaptureRecordFragment extends BaseFragment implements OnCamer
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.camera_capture_main_framelayout,
-                        new CameraCapturePreviewFragment(Util.Const.类型_视频, filePath),
+                        new CameraCapturePreviewFragment(Util.Const.类型_视频, filePath, realDuration),
                         CameraCapturePreviewFragment.class.getSimpleName())
                 .addToBackStack(null)
                 .commit();

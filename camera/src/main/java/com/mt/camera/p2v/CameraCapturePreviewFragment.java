@@ -34,10 +34,12 @@ public class CameraCapturePreviewFragment extends BaseFragment {
 
     private int type;
     private String filePath;
+    private long realDuration;
 
-    public CameraCapturePreviewFragment(int type, String filePath) {
+    public CameraCapturePreviewFragment(int type, String filePath, long duration) {
         this.type = type;
         this.filePath = filePath;
+        this.realDuration = duration;
     }
 
     @Nullable
@@ -92,7 +94,7 @@ public class CameraCapturePreviewFragment extends BaseFragment {
                 // 通知刷新相册
                 Util.notifyAlbumDataChanged(getContext(), new File(filePath));
                 // 确认并返回
-                ((CameraCaptureActivity) getActivity()).returnPath(type, filePath);
+                ((CameraCaptureActivity) getActivity()).returnPath(type, filePath, realDuration);
             }
         });
 

@@ -1,5 +1,6 @@
 package com.mt.camera.widget;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -160,7 +161,7 @@ public class CaptureButton extends View {
                 if (isLongClick && mode != Mode.MODE_CAPTURE) {
                     if (Math.abs(now - lastActionDownTime) > 1000) {
                         if (listener != null) {
-                            listener.onCaptureRecordEnd();
+                            listener.onCaptureRecordEnd(Math.abs(now - lastActionDownTime));
                         }
                     } else {
                         // 录制时间太短
@@ -178,6 +179,7 @@ public class CaptureButton extends View {
     }
 
 
+    @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -193,7 +195,7 @@ public class CaptureButton extends View {
                 } else {
                     // 时间到了
                     if (listener != null) {
-                        listener.onCaptureRecordEnd();
+                        listener.onCaptureRecordEnd(mLoadingTime);
                     }
                     handler.sendEmptyMessage(MSG_RECORD_END);
                 }
@@ -261,7 +263,7 @@ public class CaptureButton extends View {
         void onCaptureRecordStart();
 
         // 停止录像
-        void onCaptureRecordEnd();
+        void onCaptureRecordEnd(Long videoTime);
 
         // 拍摄异常
         void onCaptureError(String message);

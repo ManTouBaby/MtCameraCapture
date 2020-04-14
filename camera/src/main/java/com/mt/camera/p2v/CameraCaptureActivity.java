@@ -60,7 +60,7 @@ public class CameraCaptureActivity extends AppCompatActivity implements CameraCa
 
     // ——————————————————————————————————————————————————————————————————
     @Override
-    public void returnPath(int type, final String path) {
+    public void returnPath(int type, final String path, final long duration) {
         //
         if (type == Util.Const.类型_照片) {
             // 开始压缩
@@ -94,6 +94,7 @@ public class CameraCaptureActivity extends AppCompatActivity implements CameraCa
                             Intent intent = new Intent();
                             intent.putExtra(CameraHelper.DATA, file.getAbsolutePath());
                             intent.putExtra(CameraHelper.DATA_ORIGIN, path);
+                            intent.putExtra(CameraHelper.DATA_REAL_DURATION, duration);
                             setResult(RESULT_OK, intent);
                             finish();
                         }
@@ -105,6 +106,7 @@ public class CameraCaptureActivity extends AppCompatActivity implements CameraCa
                             Intent intent = new Intent();
                             intent.putExtra(CameraHelper.DATA, path);
                             intent.putExtra(CameraHelper.DATA_ORIGIN, path);
+                            intent.putExtra(CameraHelper.DATA_REAL_DURATION, duration);
                             setResult(RESULT_OK, intent);
                             finish();
                         }
@@ -116,6 +118,7 @@ public class CameraCaptureActivity extends AppCompatActivity implements CameraCa
             Intent intent = new Intent();
             intent.putExtra(CameraHelper.DATA, path);
             intent.putExtra(CameraHelper.DATA_ORIGIN, path);
+            intent.putExtra(CameraHelper.DATA_REAL_DURATION, duration);
             setResult(RESULT_OK, intent);
             finish();
         }

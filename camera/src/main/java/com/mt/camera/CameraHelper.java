@@ -18,6 +18,7 @@ public class CameraHelper {
     public static final String DATA = "DATA";
     // 原文件路径
     public static final String DATA_ORIGIN = "DATA_ORIGIN";
+    public static final String DATA_REAL_DURATION = "DATA_REAL_DURATION";
 
     /**
      * 拍照

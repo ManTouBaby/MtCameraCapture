@@ -5,6 +5,6 @@ package com.mt.camera.p2v;
  */
 interface CameraCaptureInterface {
 
-    void returnPath(int type, String path);
+    void returnPath(int type, String path,long realDuration);
 
 }

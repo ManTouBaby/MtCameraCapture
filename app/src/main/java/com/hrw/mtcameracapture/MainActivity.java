@@ -1,5 +1,6 @@
 package com.hrw.mtcameracapture;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -25,6 +26,17 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.btn_take_photo_video:
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            String path = data.getStringExtra(CameraHelper.DATA);
+            long realDuration = data.getLongExtra(CameraHelper.DATA_REAL_DURATION, (long) 0F);
+            String pathOrigin = data.getStringExtra(CameraHelper.DATA_ORIGIN);
+            System.out.println("录制时长:" + realDuration);
         }
     }
 }
