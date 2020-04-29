@@ -9,9 +9,11 @@ import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.media.MediaRecorder;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.view.SurfaceHolder;
 import android.view.TextureView;
 
+import com.mt.camera.CameraHelper;
 import com.mt.camera.widget.AutoFitTextureView;
 
 import java.io.File;
@@ -244,6 +246,9 @@ class Capture {
                     bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
                     // 创建文件
                     String parentPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + File.separator + "Camera";
+                    if (!TextUtils.isEmpty(CameraHelper.mFileDir)) {
+                        parentPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + CameraHelper.mFileDir + File.separator + "images";
+                    }
                     File mediaStorageDir = new File(parentPath);
                     if (!mediaStorageDir.exists()) {
                         mediaStorageDir.mkdirs();
@@ -271,22 +276,24 @@ class Capture {
      * 开始录制
      */
     public void captureRecordStart(int orientation) {
-        // 生成视频文件
-        String parentPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath()
-                + File.separator + "Camera";
+        // 生成视频文件  /storage/emulated/0/DCIM/Camera
+        String parentPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + File.separator + "Camera";
+        if (!TextUtils.isEmpty(CameraHelper.mFileDir)) {
+            parentPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + CameraHelper.mFileDir + File.separator + "videos";
+        }
         File parentFile = new File(parentPath);
         if (!parentFile.exists()) {
             parentFile.mkdirs();
         }
         fileVideo = parentPath + File.separator + Util.randomName() + ".mp4";
-//        File file = new File(fileVideo);
-//        if (!file.exists()) {
-//            try {
-//                file.createNewFile();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        File file = new File(fileVideo);
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         captureRecordEnd();
         camera.stopPreview();
         camera.unlock();

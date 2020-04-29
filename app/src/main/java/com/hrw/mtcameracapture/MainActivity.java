@@ -19,12 +19,13 @@ public class MainActivity extends AppCompatActivity {
     public void cameraClick(View view) {
         switch (view.getId()) {
             case R.id.btn_take_video:
-                CameraHelper.captureRecord(this, 30, 15000);
+                CameraHelper.getInstance(getPackageName()).captureRecord(this, 30, 15000);
                 break;
             case R.id.btn_take_photo:
-                CameraHelper.capturePhoto(this, 20);
+                CameraHelper.getInstance(getPackageName()).capturePhoto(this, 20);
                 break;
             case R.id.btn_take_photo_video:
+                CameraHelper.getInstance(getPackageName()).capturePhoto2Record(this, 10, 15000);
                 break;
         }
     }

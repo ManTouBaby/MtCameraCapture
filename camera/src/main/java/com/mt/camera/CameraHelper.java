@@ -13,12 +13,31 @@ import com.mt.camera.widget.CaptureButton;
  * Description:
  */
 public class CameraHelper {
-
-    // 压缩后的文件路径
-    public static final String DATA = "DATA";
-    // 原文件路径
-    public static final String DATA_ORIGIN = "DATA_ORIGIN";
+    public static final String DATA = "DATA";   // 压缩后的文件路径
+    public static final String DATA_ORIGIN = "DATA_ORIGIN";  // 原文件路径
     public static final String DATA_REAL_DURATION = "DATA_REAL_DURATION";
+    public static String mFileDir;
+    private static CameraHelper mCameraHelper;
+
+    private CameraHelper(String fileDir) {
+        mFileDir = fileDir;
+    }
+
+    public static CameraHelper getInstance(String fileDir) {
+        if (mCameraHelper == null) {
+            synchronized (CameraHelper.class) {
+                if (mCameraHelper == null) {
+                    mCameraHelper = new CameraHelper(fileDir);
+                }
+            }
+        }
+        return mCameraHelper;
+    }
+
+    public static CameraHelper getInstance() {
+        return getInstance(null);
+    }
+
 
     /**
      * 拍照
@@ -26,10 +45,10 @@ public class CameraHelper {
      * @param activity
      * @param requestCode
      */
-    public static final void capturePhoto(Activity activity, int requestCode) {
-        Intent intent = capturePhoto2Record(activity, requestCode, CaptureButton.Mode.MODE_CAPTURE, 15000);
-        activity.startActivityForResult(intent, requestCode);
+    public void capturePhoto(Activity activity, int requestCode) {
+        capturePhoto2Record(activity, requestCode, CaptureButton.Mode.MODE_CAPTURE_RECORD, 15000);
     }
+
 
     /**
      * 录像
@@ -38,10 +57,10 @@ public class CameraHelper {
      * @param requestCode
      * @param duration
      */
-    public static final void captureRecord(Activity activity, int requestCode, long duration) {
-        Intent intent = capturePhoto2Record(activity, requestCode, CaptureButton.Mode.MODE_RECORD, duration);
-        activity.startActivityForResult(intent, requestCode);
+    public void captureRecord(Activity activity, int requestCode, long duration) {
+        capturePhoto2Record(activity, requestCode, CaptureButton.Mode.MODE_RECORD, duration);
     }
+
 
     /**
      * 拍照+录像
@@ -50,11 +69,9 @@ public class CameraHelper {
      * @param requestCode
      * @param duration
      */
-    public static final void capturePhoto2Record(Activity activity, int requestCode, long duration) {
-        Intent intent = capturePhoto2Record(activity, requestCode, CaptureButton.Mode.MODE_CAPTURE_RECORD, duration);
-        activity.startActivityForResult(intent, requestCode);
+    public void capturePhoto2Record(Activity activity, int requestCode, long duration) {
+        capturePhoto2Record(activity, requestCode, CaptureButton.Mode.MODE_CAPTURE_RECORD, duration);
     }
-
 
     /**
      * 录音
@@ -62,7 +79,7 @@ public class CameraHelper {
      * @param activity
      * @param funAudioRecordListener
      */
-    public static final void captureAudioRecord(AppCompatActivity activity, AudioRecordListener funAudioRecordListener) {
+    public void captureAudioRecord(AppCompatActivity activity, AudioRecordListener funAudioRecordListener) {
         AudioDialogFragment funAudioDialogFragment = AudioDialogFragment.newInstance();
         funAudioDialogFragment.setAudioRecordListener(funAudioRecordListener);
         funAudioDialogFragment.show(activity.getSupportFragmentManager(), "AudioDialogFragment");
@@ -76,10 +93,10 @@ public class CameraHelper {
      * @param mode     模式
      * @param duration 拍摄时长 单位毫秒
      */
-    private static final Intent capturePhoto2Record(Activity activity, int requestCode, int mode, long duration) {
+    private void capturePhoto2Record(Activity activity, int requestCode, int mode, long duration) {
         Intent intent = new Intent(activity, CameraCaptureActivity.class);
         intent.putExtra(CameraCaptureActivity.MODE, mode);
         intent.putExtra(CameraCaptureActivity.DURATION, duration);
-        return intent;
+        activity.startActivityForResult(intent, requestCode);
     }
 }
