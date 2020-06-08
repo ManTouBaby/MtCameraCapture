@@ -46,7 +46,7 @@ public class CameraHelper {
      * @param requestCode
      */
     public void capturePhoto(Activity activity, int requestCode) {
-        capturePhoto2Record(activity, requestCode, CaptureButton.Mode.MODE_CAPTURE_RECORD, 15000);
+        capturePhoto2Record(activity, requestCode, CaptureButton.Mode.MODE_CAPTURE, 15000);
     }
 
 

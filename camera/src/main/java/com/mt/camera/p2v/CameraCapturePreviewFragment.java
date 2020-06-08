@@ -25,7 +25,6 @@ import java.io.File;
 @SuppressLint("ValidFragment")
 public class CameraCapturePreviewFragment extends BaseFragment {
 
-
     private SubsamplingScaleImageView viewImage;
     private ImageView viewImageBack;
     private TextView viewTextConfirm;
