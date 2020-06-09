@@ -254,6 +254,7 @@ class Capture {
                         mediaStorageDir.mkdirs();
                     }
                     File mediaFile = new File(mediaStorageDir.getPath() + File.separator + Util.randomName() + ".jpg");
+                    if (!mediaFile.exists()) mediaFile.createNewFile();
                     FileOutputStream stream = new FileOutputStream(mediaFile);
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                     stream.flush();
